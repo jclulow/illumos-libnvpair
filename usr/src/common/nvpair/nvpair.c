@@ -3267,7 +3267,9 @@ nvs_xdr_nvpair(nvstream_t *nvs, nvpair_t *nvp, size_t *size)
 		return (nvs_xdr_nvp_op(nvs, nvp));
 	}
 	case NVS_OP_DECODE: {
+#ifdef	__sun
 		struct xdr_bytesrec bytesrec;
+#endif
 
 		/* get the encode and decode size */
 		if (!xdr_int(xdr, &encode_len) || !xdr_int(xdr, &decode_len))
@@ -3278,12 +3280,14 @@ nvs_xdr_nvpair(nvstream_t *nvs, nvpair_t *nvp, size_t *size)
 		if (*size == 0)
 			return (0);
 
+#ifdef	__sun
 		/* sanity check the size parameter */
 		if (!xdr_control(xdr, XDR_GET_BYTES_AVAIL, &bytesrec))
 			return (EFAULT);
 
 		if (*size > NVS_XDR_MAX_LEN(bytesrec.xc_num_avail))
 			return (EFAULT);
+#endif
 		break;
 	}
 

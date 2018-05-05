@@ -26,6 +26,7 @@
 
 #pragma ident	"%Z%%M%	%I%	%E% SMI"
 
+#include <stdlib.h>
 #include <sys/stropts.h>
 #include <sys/isa_defs.h>
 #include <sys/nvpair.h>

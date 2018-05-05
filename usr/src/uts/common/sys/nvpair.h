@@ -26,6 +26,7 @@
 #ifndef	_SYS_NVPAIR_H
 #define	_SYS_NVPAIR_H
 
+#include <sys/inttypes.h>
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/errno.h>
@@ -33,6 +34,8 @@
 
 #if defined(_KERNEL) && !defined(_BOOT)
 #include <sys/kmem.h>
+#else
+#include <stdint.h>
 #endif
 
 #ifdef	__cplusplus
