@@ -21,36 +21,38 @@ OBJS =			libnvpair.o \
 			fnvpair.o \
 			nvpair_json.o
 
+OBJDIR =		obj
+
 CC =			gcc
 AR =			ar
 
-all: obj/$(LIBRARY)
+all: $(OBJDIR)/$(LIBRARY)
 
-test: obj/test
+test: $(OBJDIR)/test
 	@echo running test program...
-	@./obj/test
+	@$(OBJDIR)/test
 	@echo ... test ok
 
-obj/test: test.c obj/$(LIBRARY)
+$(OBJDIR)/test: test.c $(OBJDIR)/$(LIBRARY)
 	$(CC) -o $@ $(CFLAGS) $^
 
-obj/%.o: usr/src/common/nvpair/%.c | obj
+$(OBJDIR)/%.o: usr/src/common/nvpair/%.c | $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-obj/%.o: usr/src/lib/libnvpair/%.c | obj
+$(OBJDIR)/%.o: usr/src/lib/libnvpair/%.c | $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-obj/$(LIBRARY): $(OBJS:%=obj/%)
+$(OBJDIR)/$(LIBRARY): $(OBJS:%=$(OBJDIR)/%)
 	$(AR) rcs $@ $^
 
-obj:
+$(OBJDIR):
 	mkdir -p $@
 
 clean:
-	rm -f obj/$(LIBRARY)
-	rm -f $(OBJS:%=obj/%)
-	rm -f obj/test
+	rm -f $(OBJDIR)/$(LIBRARY)
+	rm -f $(OBJS:%=$(OBJDIR)/%)
+	rm -f $(OBJDIR)/test
 
 clobber:
-	rm -rf obj/
+	rm -rf $(OBJDIR)/
 
